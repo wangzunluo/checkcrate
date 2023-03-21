@@ -16,12 +16,11 @@ def get_file_time():
     return os.stat(filename).st_mtime
     
 
-start_time = 0
+
 filename = 'C:\Riot Games\League of Legends\lockfile'
 if is_unix():
     filename = '/Applications/League of Legends.app/Contents/LoL/lockfile'
-else:
-    start_time = get_file_time()
+
 username = 'riot'
 account_session = None
 base_url = None
@@ -29,31 +28,21 @@ data = {}
 
 
 def poll():
-    global start_time
     while(True):
-        file_time = get_file_time()
-        if start_time != file_time:
-            update_data_file()
-            start_time = file_time
-        time.sleep(60)
+        update_data_file()
+        time.sleep(60*5)
 
 
 def account_active():
-    if is_unix():
-        return os.path.isfile(filename)
-    else:
-        global start_time
-        file_time = get_file_time()
-        last_time = start_time
-        start_time = file_time
-        return last_time != file_time
+    return os.path.isfile(filename)
 
 
 def update_data_file():
     global data
-    name = get_name()
-    data[name] = get_chest_info()
-    save_data()
+    if account_active:
+        name = get_name()
+        data[name] = get_chest_info()
+        save_data()
 
 
 def read_lock():
@@ -110,20 +99,13 @@ def get_current_time():
     return int(str(time.time()).replace('.', '')[:13])
 
 
-def update_data():
-    for user in data:
-        if get_current_time() > data[user]["nextChestRechargeTime"]:
-            print('calculate number of chests available')
+def calculate_chest(next_time):
+    get_current_time()
+    print('calculate number of chests available')
             
             
 def main():
-    get_data()
-    if account_active():
-        parse_lock()
-        data[get_name()] = get_chest_info()
-        save_data()
-    else:
-        update_data()
+    poll()
 
 if __name__ == '__main__':
     main()
