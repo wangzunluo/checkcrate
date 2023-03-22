@@ -100,12 +100,20 @@ def get_current_time():
 
 
 def calculate_chest(next_time):
-    get_current_time()
+    current = get_current_time()
     print('calculate number of chests available')
+    print('current time: {}'.format(current))
+    print('next time: {}'.format(next_time))
+    diff = int(str(current)[:10])-int(str(next_time)[:10])
+    print('difference time: {}'.format(diff))
+    week = 604800
+    print('divided: {}'.format(diff // week))
             
             
 def main():
-    poll()
+    #poll()
+    get_data()
+    calculate_chest(data['lilkid']['nextChestRechargeTime'])
 
 if __name__ == '__main__':
     main()
