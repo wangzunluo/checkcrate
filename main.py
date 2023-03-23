@@ -43,6 +43,14 @@ def update_data_file():
         name = get_name()
         data[name] = get_chest_info()
         save_data()
+    else:
+        for user in data:
+            gained = calculate_chest(data[user]['nextChestRechargeTime'])
+            earnable = data[user]['earnableChests'] + gained
+            if earnable > data[user]['maximumChests']:
+                earnable = data[user]['maximumChests']
+            print()
+        
 
 
 def read_lock():
@@ -101,19 +109,21 @@ def get_current_time():
 
 def calculate_chest(next_time):
     current = get_current_time()
-    print('calculate number of chests available')
-    print('current time: {}'.format(current))
-    print('next time: {}'.format(next_time))
+    if current < next_time:
+        return 0
+    
     diff = int(str(current)[:10])-int(str(next_time)[:10])
-    print('difference time: {}'.format(diff))
     week = 604800
-    print('divided: {}'.format(diff // week))
+    available = diff // week + 1
+    mr = diff % week
+    print(time.strftime('%H:%M:%S', time.gmtime(mr)))
+    return available
             
             
 def main():
-    #poll()
     get_data()
     calculate_chest(data['lilkid']['nextChestRechargeTime'])
+    #poll()
 
 if __name__ == '__main__':
     main()
