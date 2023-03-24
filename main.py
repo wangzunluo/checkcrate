@@ -116,7 +116,9 @@ def calculate_chest(next_time):
     week = 604800
     available = diff // week + 1
     mr = diff % week
-    print(time.strftime('%H:%M:%S', time.gmtime(mr)))
+    eureka = week - mr
+    print(eureka)
+    print('0'+str(int(time.strftime('%d', time.gmtime(eureka)))-1)+time.strftime(':%H:%M:%S', time.gmtime(eureka)))
     return available
             
             
