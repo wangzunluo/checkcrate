@@ -61,11 +61,13 @@ def update_data_file():
                     if 'Earn points from time spent' in obj['description']:
                         obj['description'] = 'Earn points from time spent playing and winning games'
                     print('{0: <{luser}} {1}: {2}/{3}'.format('', obj['description'], obj['progress']['currentProgress'], obj['progress']['totalCount'], luser=max_length_user))
-                print('{0: <{luser}} Rewards: '.format('', luser=max_length_user))
+                reward_str = '{0: <{luser}} Rewards: '.format('', luser=max_length_user)
                 for reward in mission['rewards']:
-                    print('{0: <{luser}} {1}'.format('', reward['description'], luser=max_length_user))
+                    reward_str += '{0} '.format(reward['description'])
+                print(reward_str)
                 time_to_expire = calculate_time_string(mission['endTime'], window=True)
                 print('{0: <{luser}} Time remaining: {1}'.format('', time_to_expire, luser=max_length_user))
+                print()
         
 
 
