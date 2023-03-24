@@ -30,7 +30,6 @@ max_length_user = 0
 def poll():
     while(True):
         update_data_file()
-        return
         time.sleep(60*5)
 
 
